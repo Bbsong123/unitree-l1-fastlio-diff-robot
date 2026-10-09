@@ -1,15 +1,22 @@
 # ==============================================================================
-# robot_nav (Nav) 全局导航配置参数
+# robot_nav 参数配置
 # ==============================================================================
 
-# ----------------- 话题配置 -----------------
-odom_topic: "/Odometry"                 # FAST-LIO 发布的全局里程计
-desire_position_topic: "/desire_position" # 目标点坐标话题 (geometry_msgs/PoseStamped)
-cmd_vel_topic: "/cmd_vel"               # 底层底盘驱动 Twist 话题
+# 1. 底层底盘速度转发与看门狗参数 (base_controller_node)
+base_controller:
+  input_topic: "/target_cmd_vel"     # 接收上层控制算法发布的期望速度
+  output_topic: "/cmd_vel"           # 转发给底层实际底盘驱动
+  max_linear_speed: 0.4              # 最大线速度限制 (m/s)
+  max_angular_speed: 0.8             # 最大角速度限制 (rad/s)
+  watchdog_timeout: 0.5              # 看门狗超时时间 (s)，上层断联超时自动刹停
 
-# ----------------- 控制与算法参数 -----------------
-const_linear_speed: 0.15                # 直行常速 (m/s)
-const_angular_speed: 0.25               # 转向常速 (rad/s)
-dist_tolerance: 0.08                    # 目标到位容差 (m)
-angle_align_thresh: 0.35                # 航向对齐阈值 (rad，约 20 度)
-control_rate: 20.0                      # 定时控制频率 (Hz)
+# 2. 定点跟踪控制算法参数 (point_tracker_node)
+point_tracker:
+  odom_topic: "/Odometry"            # FAST-LIO 发布的全局定位里程计
+  target_topic: "/desire_position"   # 目标点话题 (geometry_msgs/PoseStamped)
+  cmd_topic: "/target_cmd_vel"       # 输出给底层速度控制器的速度话题
+  const_linear_speed: 0.15           # 巡航直线常速 (m/s)
+  const_angular_speed: 0.25          # 原地转向常速 (rad/s)
+  dist_tolerance: 0.08               # 到达判定距离容差 (m)
+  angle_align_thresh: 0.35           # 航向对齐角度阈值 (rad, 约20°)
+  control_rate: 20.0                 # 算法解算频率 (Hz)

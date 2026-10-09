@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>robot_nav</name>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
   <description>
-    基于 FAST-LIO 全局里程计的全局导航中枢功能包。
-    包含底层极简驱动控制 BaseController 与高层算法解算 PointNavigator。
+    基于纯话题解耦的移动机器人运动控制套件。
+    包含底层速度守护控制器 base_controller_node 与基于 FAST-LIO 里程计的定点跟踪算法 point_tracker_node。
   </description>
 
   <maintainer email="user@todo.todo">Developer</maintainer>
@@ -15,20 +15,17 @@
   <build_depend>roscpp</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>nav_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
   <build_depend>tf</build_depend>
 
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
-  <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>tf</build_export_depend>
 
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
   <exec_depend>tf</exec_depend>
 
 </package>

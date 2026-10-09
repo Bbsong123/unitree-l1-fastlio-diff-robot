@@ -1,4 +1,4 @@
 <launch>
-  <!-- 3. 单独启动 robot_nav (Nav) 全局导航中枢 -->
+  <!-- 3. 启动 robot_nav 运动控制套件 -->
   <include file="$(find robot_nav)/launch/nav.launch" />
 </launch>

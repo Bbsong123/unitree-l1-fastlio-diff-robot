@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(robot_nav)
 
-## 编译选项设置 (统一 C++14)
+## 编译选项设置 (C++14 / O3 优化)
 add_compile_options(-std=c++14 -O3 -Wall)
 
 ## 查找依赖包
@@ -9,50 +9,36 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
   nav_msgs
-  std_msgs
   tf
 )
 
 ## Catkin 导出设置
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}_lib
-  CATKIN_DEPENDS roscpp geometry_msgs nav_msgs std_msgs tf
+  CATKIN_DEPENDS roscpp geometry_msgs nav_msgs tf
 )
 
 ## 头文件路径
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
 )
 
-## 声明算法与控制库
-add_library(${PROJECT_NAME}_lib
-  src/base_controller.cpp
-  src/point_navigator.cpp
-)
-target_link_libraries(${PROJECT_NAME}_lib
+## 1. 底层底盘速度控制器与安全守护节点
+add_executable(base_controller_node src/base_controller_node.cpp)
+target_link_libraries(base_controller_node
   ${catkin_LIBRARIES}
 )
 
-## 构建核心导航节点
-add_executable(robot_nav_node src/robot_nav_node.cpp)
-target_link_libraries(robot_nav_node
-  ${PROJECT_NAME}_lib
+## 2. 定点跟踪算法节点
+add_executable(point_tracker_node src/point_tracker_node.cpp)
+target_link_libraries(point_tracker_node
   ${catkin_LIBRARIES}
 )
 
 ## 安装规则
-install(TARGETS robot_nav_node ${PROJECT_NAME}_lib
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+install(TARGETS base_controller_node point_tracker_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
-
-install(DIRECTORY launch config
+install(DIRECTORY launch config scripts
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
