@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robot_bringup</name>
+  <version>1.0.0</version>
+  <description>
+    移动机器人顶层集成与多层启动管理功能包。
+    包含底盘、雷达建图、自主导航的分层启动矩阵与外参配置文件。
+  </description>
+
+  <maintainer email="user@todo.todo">Developer</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>turn_on_wheeltec_robot</exec_depend>
+  <exec_depend>unitree_lidar_ros</exec_depend>
+  <exec_depend>fast_lio</exec_depend>
+  <exec_depend>robot_nav</exec_depend>
+
+</package>

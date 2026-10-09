@@ -1,0 +1,45 @@
+# ==============================================================================
+# Git Ignore Rules for ROS Workspace
+# ==============================================================================
+
+# Catkin / ROS build artifacts
+build/
+devel/
+install/
+.catkin_workspace
+.catkin_tools/
+
+# ROS log & data files
+log/
+*.log
+*.bag
+*.pcd
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# C / C++ build objects
+*.o
+*.obj
+*.gch
+*.pch
+
+# Editor / IDE artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.orig

@@ -1,0 +1,7 @@
+<launch>
+  <!-- robot_nav 核心导航节点独立启动 -->
+  <node pkg="robot_nav" type="robot_nav_node" name="robot_nav_node" output="screen">
+    <!-- 加载参数配置文件 -->
+    <rosparam command="load" file="$(find robot_nav)/config/nav_params.yaml" />
+  </node>
+</launch>

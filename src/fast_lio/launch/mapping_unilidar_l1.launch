@@ -1,0 +1,32 @@
+<launch>
+	<!-- 宇树 L1 雷达 + FAST-LIO2 (ROS1 Noetic) SLAM 建图启动文件 -->
+	<arg name="rviz" default="true" />
+
+	<!-- 是否一并启动雷达驱动：默认为 false（推荐分终端启动以便排查）；若设为 true 可单终端一键全启动 -->
+	<arg name="run_driver" default="false" />
+
+	<!-- 当 run_driver:=true 时拉起驱动 -->
+	<group if="$(arg run_driver)">
+		<include file="$(find unitree_lidar_ros)/launch/run_without_rviz.launch" />
+	</group>
+
+	<!-- 加载 FAST-LIO2 参数（L1 专用） -->
+	<rosparam command="load" file="$(find fast_lio)/config/unilidar_l1.yaml" />
+
+	<param name="feature_extract_enable" type="bool" value="0" />
+	<param name="point_filter_num" type="int" value="1" />
+	<param name="max_iteration" type="int" value="3" />
+	<param name="filter_size_surf" type="double" value="0.1" />
+	<param name="filter_size_map" type="double" value="0.1" />
+	<param name="cube_side_length" type="double" value="1000" />
+	<param name="runtime_pos_log_enable" type="bool" value="0" />
+
+	<!-- FAST-LIO 建图主节点 -->
+	<node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen" />
+
+	<!-- RViz 可视化视图 -->
+	<group if="$(arg rviz)">
+		<node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz"
+			args="-d $(find fast_lio)/rviz_cfg/loam_livox.rviz" />
+	</group>
+</launch>

@@ -1,0 +1,38 @@
+common:
+    lid_topic: "/unilidar/cloud" 
+    imu_topic: "/unilidar/imu" 
+    time_sync_en: false
+    time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init
+
+preprocess:
+    lidar_type: 5               # 5 代表宇树 UNILIDAR
+    scan_line: 18               # L1 为 18 线
+    timestamp_unit: 0           # 0-秒 (sec), 1-毫秒 (ms), 2-微秒 (us), 3-纳秒 (ns)
+    blind: 0.5                  # 过滤近距离盲区杂点 (米)
+
+mapping:
+    extrinsic_est_en: false     # L1 出厂已标定，设为 false 避免剧烈运动时外参跑偏
+    acc_cov_output: 500
+    gyr_cov_output: 1000 
+    b_acc_cov: 0.0001 
+    b_gyr_cov: 0.0001 
+    fov_degree: 180 
+    det_range: 100.0
+    # transform from imu to lidar (IMU在雷达坐标系下的位置取负即雷达在IMU系下的位置)
+    extrinsic_T: [ 0.007698, 0.014655, -0.00667] 
+    extrinsic_R: [ 1, 0, 0,
+                   0, 1, 0,
+                   0, 0, 1 ]
+
+odometry: 
+    publish_odometry_without_downsample: true
+
+publish:
+    path_en: true                 # 发布运动轨迹 (/path)
+    scan_publish_en: true         # 发布当前帧点云
+    scan_bodyframe_pub_en: false  # 是否在 IMU body 系下输出当前点云
+    dense_publish_en: true        # 发布稠密全局地图 (/cloud_registered)
+
+pcd_save:
+    pcd_save_en: false            # 是否保存地图到 pcd 文件
+    interval: -1                  # -1 代表在节点关闭时将所有帧保存为一个 pcd 文件；>0 代表每隔 N 帧保存一个

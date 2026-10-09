@@ -1,0 +1,17 @@
+<launch>
+  <!-- ============================================================================== -->
+  <!-- 4. 全系统一键启动 (底盘驱动 + 雷达感知 + FAST-LIO定位建图 + Nav自主导航) -->
+  <!-- ============================================================================== -->
+  <arg name="open_rviz" default="true" doc="是否拉起 RViz 监视点云与位姿" />
+
+  <!-- 4.1 启动底层四驱底盘驱动 -->
+  <include file="$(find robot_bringup)/launch/chassis.launch" />
+
+  <!-- 4.2 启动雷达驱动、Static TF 与 FAST-LIO 建图 -->
+  <include file="$(find robot_bringup)/launch/mapping.launch">
+    <arg name="open_rviz" value="$(arg open_rviz)" />
+  </include>
+
+  <!-- 4.3 启动 robot_nav (Nav) 全局导航中枢 -->
+  <include file="$(find robot_bringup)/launch/nav.launch" />
+</launch>

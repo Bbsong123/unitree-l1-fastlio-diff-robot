@@ -1,0 +1,36 @@
+####################################################
+# 宇树 L1 雷达 ROS1 驱动配置 (unitree_lidar_ros)
+####################################################
+
+# 通信初始化方式: 1-串口通信 (Serial, 默认), 2-以太网通信 (UDP)
+initialize_type: 1
+
+# 串口配置 (仅在 initialize_type: 1 时生效)
+# L1 标配 USB 转串口板，波特率固化为 2,000,000 (不可修改)
+# 默认设备节点通常为 /dev/ttyUSB0 (或使用 udev 规则绑定的 /dev/unitree_lidar)
+port: "/dev/unitree_lidar"
+
+# UDP 以太网配置 (仅在 initialize_type: 2 时生效)
+# 若配合宇树官方网口转接盒使用：
+# 雷达出厂默认 IP 为 10.10.10.10, 端口 6101
+# 主机网卡 IP 请静态配置为 10.10.10.100, 端口 6201
+lidar_port: 6101
+lidar_ip: "10.10.10.10"
+local_port: 6201
+local_ip: "10.10.10.100"
+
+# 雷达测量标定参数 (通常保持默认)
+rotate_yaw_bias: 0            # 航向偏置角 (度)
+range_scale: 0.001            # 距离缩放因子 (米)
+range_bias: 0                 # 距离偏置 (米)
+range_max: 50                 # 最大有效测量距离 (米)
+range_min: 0.0                # 最小有效测量距离 (米)
+
+# 点云话题与坐标系
+cloud_frame: "unilidar_lidar"  # 点云 frame_id
+cloud_topic: "unilidar/cloud"  # 发布点云话题名 (sensor_msgs/PointCloud2)
+cloud_scan_num: 18             # L1 雷达扫描线数 (18线)
+
+# 内置 IMU 话题与坐标系
+imu_frame: "unilidar_imu"      # IMU frame_id
+imu_topic: "unilidar/imu"      # 发布 IMU 话题名 (sensor_msgs/Imu)

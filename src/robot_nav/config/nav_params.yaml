@@ -1,0 +1,15 @@
+# ==============================================================================
+# robot_nav (Nav) 全局导航配置参数
+# ==============================================================================
+
+# ----------------- 话题配置 -----------------
+odom_topic: "/Odometry"                 # FAST-LIO 发布的全局里程计
+desire_position_topic: "/desire_position" # 目标点坐标话题 (geometry_msgs/PoseStamped)
+cmd_vel_topic: "/cmd_vel"               # 底层底盘驱动 Twist 话题
+
+# ----------------- 控制与算法参数 -----------------
+const_linear_speed: 0.15                # 直行常速 (m/s)
+const_angular_speed: 0.25               # 转向常速 (rad/s)
+dist_tolerance: 0.08                    # 目标到位容差 (m)
+angle_align_thresh: 0.35                # 航向对齐阈值 (rad，约 20 度)
+control_rate: 20.0                      # 定时控制频率 (Hz)
