@@ -3,7 +3,7 @@
 
 """
 @file static_tf_broadcaster.py
-@brief 从 static_tf.yaml 动态加载雷达相对底盘的外参并广播 Static TF
+@brief 读取底盘在雷达系中的安装位姿，广播 unilidar_lidar -> base_link 静态 TF
 """
 
 import rospy
@@ -14,9 +14,11 @@ import tf.transformations
 def main():
     rospy.init_node('static_tf_broadcaster', anonymous=False)
 
-    parent_frame = rospy.get_param('~parent_frame', 'base_link')
-    child_frame = rospy.get_param('~child_frame', 'unilidar_lidar')
+    parent_frame = rospy.get_param('~parent_frame', 'unilidar_lidar')
+    child_frame = rospy.get_param('~child_frame', 'base_link')
 
+    # 平移是子坐标系原点在父坐标系中的位置，单位米；RPY 为弧度。
+    # 配置已经按雷达->底盘填写，此处直接发布，不再求逆。
     x = float(rospy.get_param('~translation/x', 0.0))
     y = float(rospy.get_param('~translation/y', 0.0))
     z = float(rospy.get_param('~translation/z', 0.0))
@@ -25,6 +27,7 @@ def main():
     pitch = float(rospy.get_param('~rotation/pitch', 0.0))
     yaw = float(rospy.get_param('~rotation/yaw', 0.0))
 
+    # 安装关系是刚性不变的，发到 /tf_static；世界位姿由 FAST-LIO 动态发布。
     broadcaster = tf2_ros.StaticTransformBroadcaster()
 
     static_transform = geometry_msgs.msg.TransformStamped()
@@ -36,6 +39,7 @@ def main():
     static_transform.transform.translation.y = y
     static_transform.transform.translation.z = z
 
+    # YAML 的固定轴欧拉角转为 ROS 使用的四元数，顺序为 x/y/z/w。
     q = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
     static_transform.transform.rotation.x = q[0]
     static_transform.transform.rotation.y = q[1]

@@ -2,30 +2,12 @@
 <package format="2">
   <name>robot_nav</name>
   <version>2.0.0</version>
-  <description>
-    基于纯话题解耦的移动机器人运动控制套件。
-    包含底层速度守护控制器 base_controller_node 与基于 FAST-LIO 里程计的定点跟踪算法 point_tracker_node。
-  </description>
-
+  <description>三轮全向底盘实验用的最小速度转发节点。</description>
   <maintainer email="user@todo.todo">Developer</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-
-  <build_depend>roscpp</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>nav_msgs</build_depend>
-  <build_depend>tf</build_depend>
-
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>geometry_msgs</build_export_depend>
-  <build_export_depend>nav_msgs</build_export_depend>
-  <build_export_depend>tf</build_export_depend>
-
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>rospy</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>tf</exec_depend>
-
+  <!-- 本包只收发 Twist，不再依赖定位、TF、Python 或测试工具。 -->
+  <depend>roscpp</depend>
+  <depend>geometry_msgs</depend>
 </package>

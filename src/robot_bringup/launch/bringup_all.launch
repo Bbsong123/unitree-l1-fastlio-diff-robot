@@ -1,17 +1,20 @@
 <launch>
-  <!-- ============================================================================== -->
-  <!-- 4. 全系统一键启动 (底盘驱动 + 雷达感知 + FAST-LIO定位建图 + 运动控制套件) -->
-  <!-- ============================================================================== -->
-  <arg name="open_rviz" default="true" doc="是否拉起 RViz 监视点云与位姿" />
+  <!-- NUC 上的一键启动入口：底盘通信、雷达建图、速度转发。 -->
+  <arg name="open_rviz" default="true" doc="NUC 无显示器时可设为 false" />
+  <!-- 默认型号尚待实物确认，可改为 mini_omni 或 top_omni。 -->
+  <arg name="car_mode" default="senior_omni" />
 
-  <!-- 4.1 启动底层四驱底盘驱动 -->
-  <include file="$(find robot_bringup)/launch/chassis.launch" />
+  <!-- 1. 官方底盘驱动：接收 /cmd_vel，与单片机交换速度和状态。 -->
+  <include file="$(find robot_bringup)/launch/chassis.launch">
+    <arg name="car_mode" value="$(arg car_mode)" />
+  </include>
 
-  <!-- 4.2 启动雷达驱动、Static TF 与 FAST-LIO 建图 -->
+  <!-- 2. L2 UDP 雷达与 FAST-LIO：发布点云、IMU 和 /Odometry。 -->
+  <!-- 定位仅作为数据输出，不参与速度控制。 -->
   <include file="$(find robot_bringup)/launch/mapping.launch">
     <arg name="open_rviz" value="$(arg open_rviz)" />
   </include>
 
-  <!-- 4.3 启动 robot_nav 运动控制套件 -->
+  <!-- 3. 将 /target_cmd_vel 的三个平面分量限速转发，无有效输入时发零。 -->
   <include file="$(find robot_bringup)/launch/nav.launch" />
 </launch>

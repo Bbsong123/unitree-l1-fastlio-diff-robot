@@ -1,44 +1,21 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(robot_nav)
 
-## 编译选项设置 (C++14 / O3 优化)
-add_compile_options(-std=c++14 -O3 -Wall)
+# 项目统一使用 C++14，不使用 C++17 接口。
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-## 查找依赖包
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  geometry_msgs
-  nav_msgs
-  tf
-)
+# 此包只需要 ROS C++ 接口和 Twist 速度消息。
+find_package(catkin REQUIRED COMPONENTS roscpp geometry_msgs)
+catkin_package(CATKIN_DEPENDS roscpp geometry_msgs)
+include_directories(${catkin_INCLUDE_DIRS})
 
-## Catkin 导出设置
-catkin_package(
-  CATKIN_DEPENDS roscpp geometry_msgs nav_msgs tf
-)
-
-## 头文件路径
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
-
-## 1. 底层底盘速度控制器与安全守护节点
+# 只编译一个速度转发节点，没有跟踪算法和测试目标。
 add_executable(base_controller_node src/base_controller_node.cpp)
-target_link_libraries(base_controller_node
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(base_controller_node ${catkin_LIBRARIES})
 
-## 2. 定点跟踪算法节点
-add_executable(point_tracker_node src/point_tracker_node.cpp)
-target_link_libraries(point_tracker_node
-  ${catkin_LIBRARIES}
-)
-
-## 安装规则
-install(TARGETS base_controller_node point_tracker_node
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY launch config scripts
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+# 保留基本安装规则，便于在 NUC 上使用 catkin 的运行/安装目录。
+install(TARGETS base_controller_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(DIRECTORY launch config
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
