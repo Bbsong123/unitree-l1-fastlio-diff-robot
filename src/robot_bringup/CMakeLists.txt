@@ -14,6 +14,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+catkin_install_python(PROGRAMS scripts/static_tf_broadcaster.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 install(DIRECTORY launch config scripts
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

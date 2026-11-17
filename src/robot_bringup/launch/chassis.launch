@@ -1,7 +1,7 @@
 <launch>
   <!-- 1. 单独启动底盘驱动 -->
-  <!-- 车型固定为 senior_4wd_dl (24V 独立悬挂四驱) -->
-  <arg name="car_mode" default="senior_4wd_dl" />
+  <!-- 默认三轮全向车型 senior_omni；按厂家实际型号选择 mini_omni / senior_omni / top_omni -->
+  <arg name="car_mode" default="senior_omni" />
 
   <include file="$(find turn_on_wheeltec_robot)/launch/turn_on_wheeltec_robot.launch">
     <arg name="car_mode" value="$(arg car_mode)" />
