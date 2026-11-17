@@ -1,0 +1,19 @@
+<launch>
+  <!-- L2 版直接调用官方串口节点，速度协议和底盘反馈逻辑不改。 -->
+  <arg name="car_mode" default="senior_omni" doc="mini_omni / senior_omni / top_omni，按实物选择" />
+  <include file="$(find turn_on_wheeltec_robot)/launch/include/base_serial.launch" />
+
+  <!-- 三轮模型以 base_link 为根，由雷达安装 TF 提供世界位姿；轮关节均固定。 -->
+  <param name="robot_description" textfile="$(find turn_on_wheeltec_robot)/urdf/$(arg car_mode)_robot.urdf" />
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+
+  <!-- 沿用原模型的零偏移关系并反向挂接，避免 base_link 出现两个父节点。 -->
+  <!-- /odom 的 child_frame_id 仍为 base_footprint，消息仅作轮速里程计反馈。 -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_footprint"
+        args="0 0 0 0 0 0 base_link base_footprint" />
+  <!-- 底盘板载 IMU 安装仍为原工程零占位；不参与 FAST-LIO。 -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_gyro"
+        args="0 0 0 0 0 0 base_link gyro_link" />
+
+  <!-- 不启动旧 robot_pose_ekf 和旧模型 launch 的其他 TF，定位根唯一来自 FAST-LIO。 -->
+</launch>

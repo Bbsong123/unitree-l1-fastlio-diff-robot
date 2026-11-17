@@ -1,0 +1,7 @@
+# 由 nav.launch 加载到 base_controller_node 的私有命名空间。
+# 修改后重启节点生效。
+input_topic: "/target_cmd_vel" # 接收外部速度指令的 Twist 话题。
+output_topic: "/cmd_vel"      # 转发给官方底盘驱动的 Twist 话题。
+max_linear_speed: 0.4         # 平面合速度 sqrt(vx² + vy²) 上限，m/s。
+max_angular_speed: 0.8        # 旋转速度 wz 的绝对值上限，rad/s。
+command_timeout: 0.5          # 超过此时间未收到有效指令则发零，秒。

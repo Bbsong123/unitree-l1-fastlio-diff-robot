@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robot_bringup</name>
+  <version>1.0.0</version>
+  <description>
+    L2 全向底盘实验入口：底盘通信、SDK2 UDP 雷达、FAST-LIO 和速度转发。
+  </description>
+
+  <maintainer email="user@todo.todo">Developer</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>turn_on_wheeltec_robot</exec_depend>
+  <exec_depend>unitree_lidar_ros</exec_depend>
+  <exec_depend>fast_lio</exec_depend>
+  <exec_depend>robot_nav</exec_depend>
+
+</package>

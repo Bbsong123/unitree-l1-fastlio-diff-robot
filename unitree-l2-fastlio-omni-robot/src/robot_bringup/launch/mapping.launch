@@ -1,0 +1,15 @@
+<launch>
+  <!-- 2. 单独启动雷达感知与 FAST-LIO 建图 -->
+  <arg name="open_rviz" default="true" doc="是否打开 RViz 查看点云与建图" />
+
+  <!-- 2.1 安装 TF：unilidar_lidar -> base_link，世界根由 FAST-LIO 决定。 -->
+  <node pkg="robot_bringup" type="static_tf_broadcaster.py" name="static_tf_broadcaster" output="screen">
+    <rosparam command="load" file="$(find robot_bringup)/config/static_tf.yaml" />
+  </node>
+
+  <!-- 2.2 启动原有 FAST-LIO 算法与 SDK2 的 L2 UDP 驱动。 -->
+  <include file="$(find fast_lio)/launch/mapping_unilidar_l2.launch">
+    <arg name="run_driver" value="true" />
+    <arg name="rviz" value="$(arg open_rviz)" />
+  </include>
+</launch>

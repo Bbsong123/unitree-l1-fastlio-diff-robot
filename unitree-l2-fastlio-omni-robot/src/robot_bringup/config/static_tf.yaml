@@ -1,0 +1,18 @@
+# L2 安装外参：底盘 base_link 原点在雷达点云坐标系中的位姿。
+# TF 顺序：camera_init -> body(IMU) -> unilidar_lidar -> base_link。
+parent_frame: "unilidar_lidar"
+child_frame: "base_link"
+
+# 单位米：底盘原点沿雷达 X/Y/Z 的位置；零值仅为未测量占位。
+# 例如轴向一致、雷达在底盘正上方 0.3m 时，底盘在雷达系 z=-0.3。
+translation:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+
+# 底盘坐标轴相对雷达坐标轴的姿态，单位弧度，固定轴 roll/pitch/yaw。
+# 若有旧 base->lidar 外参，须取逆 R'=R^T、t'=-R^T*t，不能只交换 frame 名。
+rotation:
+  roll: 0.0
+  pitch: 0.0
+  yaw: 0.0

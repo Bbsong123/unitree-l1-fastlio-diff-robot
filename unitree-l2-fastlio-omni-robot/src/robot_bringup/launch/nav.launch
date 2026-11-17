@@ -1,0 +1,4 @@
+<launch>
+  <!-- 保留原启动入口；目前只运行速度转发节点。 -->
+  <include file="$(find robot_nav)/launch/nav.launch" />
+</launch>
