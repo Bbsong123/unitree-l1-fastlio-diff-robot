@@ -10,9 +10,12 @@ find_package(catkin REQUIRED COMPONENTS roscpp geometry_msgs)
 catkin_package(CATKIN_DEPENDS roscpp geometry_msgs)
 include_directories(${catkin_INCLUDE_DIRS})
 
-# 只编译一个速度转发节点，没有跟踪算法和测试目标。
+# C++ 只编译速度转发节点，上层控制按需运行 Python 脚本。
 add_executable(base_controller_node src/base_controller_node.cpp)
 target_link_libraries(base_controller_node ${catkin_LIBRARIES})
+
+catkin_install_python(PROGRAMS scripts/keyboard.py scripts/pose_goal.py scripts/goal_console.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 # 保留基本安装规则，便于在 NUC 上使用 catkin 的运行/安装目录。
 install(TARGETS base_controller_node

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>unitree_lidar_ros</name>
+  <name>bcrobot_l1_driver</name>
   <version>1.0.0</version>
   <description>Unitree Lidar SDK for ROS</description>
 

@@ -1,13 +1,14 @@
 <launch>
 	<!-- 宇树 L1 雷达 + FAST-LIO2 (ROS1 Noetic) SLAM 建图启动文件 -->
 	<arg name="rviz" default="true" />
+	<arg name="output" default="screen" />
 
 	<!-- 是否一并启动雷达驱动：默认为 false（推荐分终端启动以便排查）；若设为 true 可单终端一键全启动 -->
 	<arg name="run_driver" default="false" />
 
 	<!-- 当 run_driver:=true 时拉起驱动 -->
 	<group if="$(arg run_driver)">
-		<include file="$(find unitree_lidar_ros)/launch/run_without_rviz.launch" />
+		<include file="$(find bcrobot_l1_driver)/launch/run_without_rviz.launch" />
 	</group>
 
 	<!-- 加载 FAST-LIO2 参数（L1 专用） -->
@@ -22,7 +23,7 @@
 	<param name="runtime_pos_log_enable" type="bool" value="0" />
 
 	<!-- FAST-LIO 建图主节点 -->
-	<node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen" />
+	<node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="$(arg output)" />
 
 	<!-- RViz 可视化视图 -->
 	<group if="$(arg rviz)">

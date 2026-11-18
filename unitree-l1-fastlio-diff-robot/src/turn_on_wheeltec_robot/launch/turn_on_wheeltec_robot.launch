@@ -1,7 +1,7 @@
 <launch>
   <!-- Arguments参数 -->
   <arg name="lidar_is_cx" default="false"/>
-  <arg name="car_mode"  default="senior_omni"
+  <arg name="car_mode"  default="senior_4wd_dl"
        doc="opt: mini_akm,senior_akm,top_akm_bs,top_akm_dl,
                  mini_mec,senior_mec_bs,senior_mec_dl,top_mec_bs,top_mec_dl,senior_mec_EightDrive,top_mec_EightDrive,
                  flagship_mec_bs,flagship_mec_dl,

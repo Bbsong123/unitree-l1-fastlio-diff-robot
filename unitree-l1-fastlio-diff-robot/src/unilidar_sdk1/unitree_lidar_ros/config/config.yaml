@@ -8,7 +8,7 @@ initialize_type: 1
 # 串口配置 (仅在 initialize_type: 1 时生效)
 # L1 标配 USB 转串口板，波特率固化为 2,000,000 (不可修改)
 # 默认设备节点通常为 /dev/ttyUSB0 (或使用 udev 规则绑定的 /dev/unitree_lidar)
-port: "/dev/unitree_lidar"
+port: "/dev/serial/by-id/usb-1a86_USB_Single_Serial_5A2B008703-if00"
 
 # UDP 以太网配置 (仅在 initialize_type: 2 时生效)
 # 若配合宇树官方网口转接盒使用：

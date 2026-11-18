@@ -1,9 +1,0 @@
-<launch>
-  <!-- 1. 单独启动底盘驱动 -->
-  <!-- 默认三轮全向车型 senior_omni；按厂家实际型号选择 mini_omni / senior_omni / top_omni -->
-  <arg name="car_mode" default="senior_omni" />
-
-  <include file="$(find turn_on_wheeltec_robot)/launch/turn_on_wheeltec_robot.launch">
-    <arg name="car_mode" value="$(arg car_mode)" />
-  </include>
-</launch>

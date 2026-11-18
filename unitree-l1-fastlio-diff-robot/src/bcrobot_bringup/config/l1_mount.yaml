@@ -1,0 +1,4 @@
+# L1 bottom center in base_footprint: [0.20, 0.00, 0.20] m.
+# Cable faces rear, so lidar +X faces forward. Add the factory L1->IMU lever.
+imu_in_base_xyz: [0.192302, -0.014655, 0.20667]
+imu_in_base_yaw: 0.0

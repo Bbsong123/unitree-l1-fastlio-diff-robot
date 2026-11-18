@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(unitree_lidar_ros)
+project(bcrobot_l1_driver)
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")

@@ -1,0 +1,14 @@
+<package format="2">
+  <name>bcrobot_bringup</name>
+  <version>0.1.0</version>
+  <description>BCrobot L1 drivers, localization and mounting transform</description>
+  <maintainer email="icral@example.com">icral</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>turn_on_wheeltec_robot</exec_depend>
+  <exec_depend>bcrobot_l1_driver</exec_depend>
+  <exec_depend>fast_lio</exec_depend>
+</package>

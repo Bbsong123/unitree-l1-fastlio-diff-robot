@@ -11,6 +11,8 @@ install/
 
 # ROS log & data files
 log/
+logs/
+!src/fast_lio/Log/
 *.log
 *.bag
 *.pcd

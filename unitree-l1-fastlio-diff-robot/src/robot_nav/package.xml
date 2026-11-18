@@ -2,12 +2,14 @@
 <package format="2">
   <name>robot_nav</name>
   <version>2.0.0</version>
-  <description>三轮全向底盘实验用的最小速度转发节点。</description>
+  <description>三轮全向底盘速度转发与可选上层控制。</description>
   <maintainer email="user@todo.todo">Developer</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <!-- 本包只收发 Twist，不再依赖定位、TF、Python 或测试工具。 -->
   <depend>roscpp</depend>
   <depend>geometry_msgs</depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
 </package>

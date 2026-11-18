@@ -1,0 +1,22 @@
+<launch>
+  <arg name="port" default="/dev/serial/by-id/usb-1a86_USB_Single_Serial_5C2C080774-if00"/>
+  <arg name="rviz" default="false"/>
+  <arg name="lio_output" default="screen"/>
+  <arg name="start_lidar" default="true"/>
+  <arg name="start_lio" default="true"/>
+  <arg name="start_chassis" default="true"/>
+  <arg name="mount" default="$(find bcrobot_bringup)/config/l1_mount.yaml"/>
+
+  <include if="$(arg start_lidar)" file="$(find bcrobot_l1_driver)/launch/run_without_rviz.launch"/>
+  <include if="$(arg start_lio)" file="$(find fast_lio)/launch/mapping_unilidar_l1.launch">
+    <arg name="run_driver" value="false"/>
+    <arg name="rviz" value="$(arg rviz)"/>
+    <arg name="output" value="$(arg lio_output)"/>
+  </include>
+  <include if="$(arg start_chassis)" file="$(find bcrobot_bringup)/launch/chassis.launch">
+    <arg name="port" value="$(arg port)"/>
+  </include>
+  <node pkg="bcrobot_bringup" type="mount_tf.py" name="l1_mount_tf" output="screen" required="true">
+    <rosparam command="load" file="$(arg mount)"/>
+  </node>
+</launch>
