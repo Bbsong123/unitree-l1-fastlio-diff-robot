@@ -15,7 +15,7 @@
 
 代码与运行说明：
 
-- [L1 工程](unitree-l1-fastlio-diff-robot/README.md)：NUC 独立部署在 `~/BCrobot_L1_ws`；底层和控制分开启动，键盘与定点共用 C++ 限速转发。
+- [L1 工程](unitree-l1-fastlio-diff-robot/README.md)：NUC 独立工作区为 `~/BCrobot_L1_ws`；本机 `l1_drive.launch` 默认启动底层和 C++ 限速转发，键盘和定点仍手动启动。
 - [L2 并行版本](unitree-l2-fastlio-omni-robot/README.md)：父仓库中的并行代码目录；SDK2 UDP 接入，尚未实机验证。迁移前版本 `d6a79fa` 保留在 `history/l2`。
 
 

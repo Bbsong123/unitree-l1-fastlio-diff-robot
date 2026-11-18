@@ -11,4 +11,5 @@
   <exec_depend>turn_on_wheeltec_robot</exec_depend>
   <exec_depend>bcrobot_l1_driver</exec_depend>
   <exec_depend>fast_lio</exec_depend>
+  <exec_depend>robot_nav</exec_depend>
 </package>

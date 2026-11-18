@@ -20,18 +20,17 @@ catkin_make -j2
 source devel/setup.bash
 ```
 
-每个终端都加载同一个 L1 工作空间，按顺序启动：
+每个终端都加载同一个 L1 工作空间。先启动底层和 C++ 限速转发：
 
 ```bash
-# 终端一：只开底层，不发运动指令
 roslaunch bcrobot_bringup l1_drive.launch
-# 终端二：开 C++ 限速转发
-roslaunch robot_nav nav.launch
 ```
+
+此入口已包含 `robot_nav/nav.launch`，不要再单独启动它。键盘、定点和其他上层算法均不自动启动；没有有效速度目标时，转发节点发送零速度。
 
 默认使用 NUC 的雷达和底盘 `/dev/serial/by-id`；其他机器先核对设备。底盘可用 `port:=...` 覆盖，L1 雷达路径在 SDK1 `unitree_lidar_ros/config/config.yaml`。如需查看点云可传 `rviz:=true`。
 
-确认定位已稳定、车体 TF 正确、现场有可用的硬件急停后，第三终端选一种上层控制：
+确认定位已稳定、车体 TF 正确、现场有可用的硬件急停后，另开终端选一种上层控制：
 
 ```bash
 rosrun robot_nav keyboard.py

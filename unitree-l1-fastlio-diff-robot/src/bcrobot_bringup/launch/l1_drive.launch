@@ -19,4 +19,5 @@
   <node pkg="bcrobot_bringup" type="mount_tf.py" name="l1_mount_tf" output="screen" required="true">
     <rosparam command="load" file="$(arg mount)"/>
   </node>
+  <include file="$(find robot_nav)/launch/nav.launch"/>
 </launch>

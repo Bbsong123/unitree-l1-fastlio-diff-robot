@@ -60,3 +60,8 @@
 - 已部署到 NUC `/home/icral/BCrobot_L1_ws`，干净环境 `catkin_make -j2` 成功；没有沿用旧构建缓存。L2 本机代码、共享 `BCrobot_ws`（含日志与缓存）和 `fast_ws` 均未改动。
 - 本机语法、包清单、XML/YAML、话题和 Git 差异检查通过。NUC 启动静态解析、可执行产物、非零 yaw 外参逆变换、TF 合成及拒绝过期 TF 检查通过。未启动底盘、雷达或运动控制，未实车复测；未提交或推送。
 - L1 底层入口随后统一改名为 `l1_drive.launch`，本机及 NUC 独立 L1 工作区已同步；NUC `roslaunch --nodes` 解析出雷达、FAST-LIO、底盘和静态 TF 四个节点，未实际启动。
+
+## L1 bringup 默认启动速度转发（2026-11-18）
+
+- 本机 L1 `l1_drive.launch` 默认启动原有四个底层节点和 `base_controller_node`，不启动上层控制程序。已声明 `robot_nav` 运行依赖并更新启动文档。
+- 本机 XML 与启动链静态展开检查通过：默认五个节点，转发仍加载原私有 YAML，关闭硬件启动参数时仍保留转发。本轮未更新 NUC 或进行实车验证；L2 未改动。
