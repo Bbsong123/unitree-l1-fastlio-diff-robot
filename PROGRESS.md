@@ -1,6 +1,6 @@
 # 项目进展
 
-更新：2026-11-18
+更新：2026-11-19
 
 - 已建立项目文档；当前以项目父目录为唯一 Git 仓库，统一管理文档和 L1/L2 两份并行代码。
 - 已克隆 `unitree-l1-fastlio-diff-robot/`，保留远端与历史；整理前 L1 版本提交为 `6ffc312`，现保留于父仓库 `history/l1`；未推送。
@@ -65,3 +65,10 @@
 
 - 本机 L1 `l1_drive.launch` 默认启动原有四个底层节点和 `base_controller_node`，不启动上层控制程序。已声明 `robot_nav` 运行依赖并更新启动文档。
 - 本机 XML 与启动链静态展开检查通过：默认五个节点，转发仍加载原私有 YAML，关闭硬件启动参数时仍保留转发。本轮未更新 NUC 或进行实车验证；L2 未改动。
+
+## Livox MID360 独立工作区（2026-11-19）
+
+- 在 `codex/mid360-workspace` 创建本地 `BCrobot_MID360_ws`，以已部署的 L1 提交 `b067bed` 为代码基线。原 L1/L2 源码未改。WHEELTEC 包、底盘入口和 `robot_nav` 逐文件比对一致。
+- 工作区随附 Livox-SDK2 v1.3.1 和 livox_ros_driver2 1.2.4；驱动使用 ROS1 包清单并随 catkin 静态链接 SDK2。FAST-LIO 恢复 Livox CustomMsg 输入、逐点时间和 MID360 参数。新增 `mid360_drive.launch`，原样复用 `l1_mount.yaml`；已与 NUC 的 L1 外参文件比对一致。
+- SSH 恢复后通过校验归档部署至 NUC `/home/icral/BCrobot_MID360_ws`。在干净 Noetic 环境从零运行 `catkin_make -j2` 成功，默认五节点和关闭底盘且开启 RViz 的入口解析通过。四个 C++ 可执行文件无缺失动态库；构建日志在 `log/catkin_make.log`。
+- 在独立 ROS master 上关闭雷达和底盘，确认 FAST-LIO 的点云与 IMU 订阅类型、里程计话题注册、复用的安装 TF 以及转发节点无输入时的零速度输出。NUC 有线端口无载波及 IPv4 地址，实际网口配置、雷达收包、定位建图和车体运动待实测。

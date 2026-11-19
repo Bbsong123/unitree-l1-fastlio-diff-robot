@@ -1,0 +1,27 @@
+<launch>
+  <arg name="port" default="/dev/serial/by-id/usb-1a86_USB_Single_Serial_5C2C080774-if00"/>
+  <arg name="rviz" default="false"/>
+  <arg name="lio_output" default="screen"/>
+  <arg name="start_lidar" default="true"/>
+  <arg name="start_lio" default="true"/>
+  <arg name="start_chassis" default="true"/>
+  <arg name="lidar_config" default="$(find livox_ros_driver2)/config/MID360_config.json"/>
+  <arg name="mount" default="$(find bcrobot_bringup)/config/l1_mount.yaml"/>
+
+  <!-- 官方 ROS1 驱动输出 /livox/lidar (CustomMsg) 和 /livox/imu (Imu)。 -->
+  <include if="$(arg start_lidar)" file="$(find livox_ros_driver2)/launch_ROS1/msg_MID360.launch">
+    <arg name="user_config_path" value="$(arg lidar_config)"/>
+  </include>
+  <include if="$(arg start_lio)" file="$(find fast_lio)/launch/mapping_mid360.launch">
+    <arg name="rviz" value="$(arg rviz)"/>
+    <arg name="output" value="$(arg lio_output)"/>
+  </include>
+  <include if="$(arg start_chassis)" file="$(find bcrobot_bringup)/launch/chassis.launch">
+    <arg name="port" value="$(arg port)"/>
+  </include>
+  <!-- 将 FAST-LIO 的 IMU 位姿接到底盘，供 robot_nav 查车体 TF。 -->
+  <node pkg="bcrobot_bringup" type="mount_tf.py" name="mid360_mount_tf" output="screen" required="true">
+    <rosparam command="load" file="$(arg mount)"/>
+  </node>
+  <include file="$(find robot_nav)/launch/nav.launch"/>
+</launch>

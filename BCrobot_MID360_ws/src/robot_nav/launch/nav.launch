@@ -1,0 +1,8 @@
+<launch>
+  <!-- 只运行基础速度转发，不启动上层运动控制算法。 -->
+  <node pkg="robot_nav" type="base_controller_node"
+        name="base_controller_node" output="screen">
+    <!-- 在节点内部加载，C++ 通过 ~input_topic 等私有参数直接读取。 -->
+    <rosparam command="load" file="$(find robot_nav)/config/base_controller.yaml" />
+  </node>
+</launch>

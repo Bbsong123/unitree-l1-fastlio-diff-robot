@@ -17,11 +17,12 @@
 
 - [L1 工程](unitree-l1-fastlio-diff-robot/README.md)：NUC 独立工作区为 `~/BCrobot_L1_ws`；本机 `l1_drive.launch` 默认启动底层和 C++ 限速转发，键盘和定点仍手动启动。
 - [L2 并行版本](unitree-l2-fastlio-omni-robot/README.md)：父仓库中的并行代码目录；SDK2 UDP 接入，尚未实机验证。迁移前版本 `d6a79fa` 保留在 `history/l2`。
+- [MID360 工作区](BCrobot_MID360_ws/README.md) 从当前 L1 部署版派生，包含 Livox SDK2 和 ROS1 驱动源码，可整目录拷到 NUC 后构建。
 
 
 ## 统一版本管理
 
-在 Codex 中打开 `E:\csprogram\全向轮`。父目录的规范、进度、讨论和两个代码目录一起进入 Git；L1/L2 目录内不再有独立 `.git` 或工作树。
+在 Codex 中打开 `E:\csprogram\全向轮`。父目录统一管理规范、进度、讨论和各版本工作区。
 
 ```text
 全向轮/
@@ -29,7 +30,8 @@
 ├─ AGENTS.md / README.md
 ├─ PROGRESS.md / DISCUSSION.md
 ├─ unitree-l1-fastlio-diff-robot/  L1 工作空间
-└─ unitree-l2-fastlio-omni-robot/  L2 工作空间
+├─ unitree-l2-fastlio-omni-robot/  L2 工作空间
+└─ BCrobot_MID360_ws/              MID360 工作空间
 ```
 
 - `main`：保存文档与两份并行代码的统一状态；合入 L2 修改不会替换 L1 目录。
@@ -49,4 +51,4 @@ git show history/l2:README.md
 
 原 `origin` 地址保持不变，本次不推送。迁移恢复资料位于本机 `.git/legacy-code-history.bundle`、`.git/legacy-code-repo/` 和 `.git/legacy-l2-worktree-link.txt`；它们不是项目源码，不进入提交。正式提交历史已导入父仓库，后续正常克隆不依赖这些本地备份。
 
-部署到 NUC 时只复制需要的 L1 或 L2 子目录作为单独的 catkin 工作空间；不要把整个父目录当成 ROS 工作空间，也不要同时 source 两套同名 ROS 包。
+部署到 NUC 时，把所需版本的目录单独复制为 catkin 工作空间，每个终端只加载该版本。
