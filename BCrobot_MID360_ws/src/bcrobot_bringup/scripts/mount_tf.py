@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""发布 MID360 IMU 坐标系 body 到底盘中心的固定安装关系。"""
+"""发布 MID360 IMU、底盘与 L515 的固定安装关系。"""
 import math
 
 from geometry_msgs.msg import TransformStamped
 import rospy
+from tf.transformations import quaternion_from_euler
 import tf2_ros
 
 
@@ -27,8 +28,23 @@ def main():
     mount.transform.translation.z = -imu_z
     mount.transform.rotation.z = -math.sin(imu_yaw / 2)
     mount.transform.rotation.w = math.cos(imu_yaw / 2)
+
+    transforms = [mount]
+    if rospy.has_param('~camera_link_frame'):
+        # YAML 直接给出相机根帧在车体中的位置和姿态。驱动将彩色帧挂在相机根帧下。
+        camera = TransformStamped()
+        camera.header.stamp = mount.header.stamp
+        camera.header.frame_id = mount.child_frame_id
+        camera.child_frame_id = rospy.get_param('~camera_link_frame')
+        translation = camera.transform.translation
+        translation.x, translation.y, translation.z = rospy.get_param('~camera_in_base_xyz')
+        rotation = camera.transform.rotation
+        rotation.x, rotation.y, rotation.z, rotation.w = quaternion_from_euler(
+            *rospy.get_param('~camera_in_base_rpy'))
+        transforms.append(camera)
+
     broadcaster = tf2_ros.StaticTransformBroadcaster()
-    broadcaster.sendTransform(mount)
+    broadcaster.sendTransform(transforms)
     rospy.spin()
 
 

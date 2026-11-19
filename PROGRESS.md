@@ -72,3 +72,10 @@
 - 工作区随附 Livox-SDK2 v1.3.1 和 livox_ros_driver2 1.2.4；驱动使用 ROS1 包清单并随 catkin 静态链接 SDK2。FAST-LIO 恢复 Livox CustomMsg 输入、逐点时间和 MID360 参数。新增 `mid360_drive.launch`，原样复用 `l1_mount.yaml`；已与 NUC 的 L1 外参文件比对一致。
 - SSH 恢复后通过校验归档部署至 NUC `/home/icral/BCrobot_MID360_ws`。在干净 Noetic 环境从零运行 `catkin_make -j2` 成功，默认五节点和关闭底盘且开启 RViz 的入口解析通过。四个 C++ 可执行文件无缺失动态库；构建日志在 `log/catkin_make.log`。
 - 在独立 ROS master 上关闭雷达和底盘，确认 FAST-LIO 的点云与 IMU 订阅类型、里程计话题注册、复用的安装 TF 以及转发节点无输入时的零速度输出。NUC 有线端口无载波及 IPv4 地址，实际网口配置、雷达收包、定位建图和车体运动待实测。
+
+## MID360 两层视觉跟随（2026-11-19）
+
+- 本机 `robot_nav` 新增可通过 `rosrun` 启动的 `person_follow.py` 及配置。默认只控制偏航，`F` 叠加平移，空格退回只跟随朝向。订阅 `/person/position`，向既有 `/target_cmd_vel` 转发链发布 `Twist`。
+- MID360 bringup 安装 YAML 改名为 `sensor_mount.yaml`。保留原 IMU 外参，增加 `base_footprint → l515_link` 的静态 TF，L515 外参暂为零占位。更新构建清单和 MID360 使用说明。
+- Python 3.8 语法、XML、YAML 和 Git 差异检查通过。NUC 临时工作区 `catkin_make -j2` 成功，独立 ROS master 验证静态 TF、左右偏航符号、平移方向与限速、距离阈值、缺 TF 时只转向，以及 `F` 和空格切换。临时测试已退出，未更新 NUC 正式部署，未进行实车联调。
+- 随后已同步至 NUC `/home/icral/BCrobot_MID360_ws`，校验 9 个文件内容，完成安装 YAML 改名。正式工作区 `catkin_make -j2` 成功，`rosrun` 识别跟随入口，bringup 默认五节点及 IMU、L515 安装参数静态解析通过。仍未启动硬件或实车联调。

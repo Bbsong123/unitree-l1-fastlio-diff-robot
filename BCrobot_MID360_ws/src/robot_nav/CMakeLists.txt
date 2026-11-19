@@ -14,7 +14,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 add_executable(base_controller_node src/base_controller_node.cpp)
 target_link_libraries(base_controller_node ${catkin_LIBRARIES})
 
-catkin_install_python(PROGRAMS scripts/keyboard.py scripts/pose_goal.py scripts/goal_console.py
+catkin_install_python(PROGRAMS scripts/keyboard.py scripts/pose_goal.py scripts/goal_console.py scripts/person_follow.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 # 保留基本安装规则，便于在 NUC 上使用 catkin 的运行/安装目录。

@@ -1,0 +1,8 @@
+# MID360 沿用已有 IMU 安装参数。相对 base_footprint，X 前、Y 左、Z 上。
+imu_in_base_xyz: [0.192302, -0.014655, 0.20667]
+imu_in_base_yaw: 0.0
+
+# L515 驱动的根帧。以下位置（米）及滚转、俯仰、偏航（弧度）为零占位，实车前填写。
+camera_link_frame: l515_link
+camera_in_base_xyz: [0.0, 0.0, 0.0]
+camera_in_base_rpy: [0.0, 0.0, 0.0]

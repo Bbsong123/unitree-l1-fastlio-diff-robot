@@ -1,0 +1,9 @@
+# 视觉三维点输入（相机前、左、上，单位米）和底盘期望速度输出。
+position_topic: /person/position
+command_topic: /target_cmd_vel
+
+yaw_tolerance_deg: 5.0   # 朝向误差在 ±5° 内时不转动。
+follow_distance: 1.2     # 期望跟随距离，米。
+distance_tolerance: 0.1  # 超出期望距离 0.1 米才开始平移。
+max_linear_speed: 0.12   # 跟随平移速度上限，m/s。
+max_angular_speed: 0.35  # 跟随偏航速度上限，rad/s。

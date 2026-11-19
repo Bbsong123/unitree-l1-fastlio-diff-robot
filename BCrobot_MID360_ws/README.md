@@ -32,9 +32,10 @@ ROS1 的 `package.xml`，直接用 `catkin_make`。所需系统依赖来自 Noet
   可用 `lidar_config:=/绝对路径/你的配置.json` 加载自定义文件。
 - 驱动 JSON 的 `extrinsic_parameter` 保持全零，点云保留在原生雷达坐标系。
   `src/fast_lio/config/mid360.yaml` 使用 FAST-LIO 上游的雷达至内置 IMU 外参。
-- 按指示原样复用 `src/bcrobot_bringup/config/l1_mount.yaml` 作为 **IMU 到底盘的安装关系**。
-  xyz 为 IMU 原点在 `base_footprint` 中的位置（X 前、Y 左、Z 上，单位米），
-  yaw 为绕 +Z 的偏航（弧度）。在 MID360 上的实际安装关系待通过车体 TF 核对。
+- `src/bcrobot_bringup/config/sensor_mount.yaml` 保存 IMU 和 L515 相对底盘的安装参数。
+  IMU 参数沿用原数值。xyz 为各传感器原点在 `base_footprint` 中的位置（X 前、Y 左、Z 上，单位米），
+  yaw 为绕 +Z 的偏航，rpy 为滚转、俯仰、偏航（弧度）。L515 默认发布 `base_footprint → l515_link`，
+  位置和姿态是零占位，实车平移跟随前请填入实测外参。
 
 ## 3. 先验收定位，再接底盘
 
@@ -64,7 +65,7 @@ RViz 显示的是 FAST-LIO 输出的 `/cloud_registered`。定点节点检查 TF
 roslaunch bcrobot_bringup mid360_drive.launch
 ```
 
-键盘与定点仍手动二选一。定点目标是 `camera_init` 中的绝对坐标（米），可选航向
+键盘、定点和视觉跟随一次只运行一个。定点目标是 `camera_init` 中的绝对坐标（米），可选航向
 为度。
 
 ```bash
@@ -72,6 +73,19 @@ rosrun robot_nav keyboard.py
 # 或者
 rosrun robot_nav goal_console.py
 ```
+
+### L515 视觉跟随
+
+在视觉终端启动现有 L515 节点，两套工作区使用同一个 `ROS_MASTER_URI`。在已加载 MID360
+环境的交互式终端运行下方命令，SSH 可用 `ssh -t nuc` 打开终端。
+
+```bash
+rosrun robot_nav person_follow.py
+```
+
+启动后只转向对准人。按 `F` 加入平移跟随，按空格退回只转向，`Ctrl+C` 退出。
+`src/robot_nav/config/person_follow.yaml` 设置输入输出话题、目标距离、误差和速度上限。
+当前直接使用相机系的水平距离，平移方向通过安装 TF 转到底盘系。没有新视觉点时由现有底盘转发节点处理断流停车。
 
 ## 替换范围
 
