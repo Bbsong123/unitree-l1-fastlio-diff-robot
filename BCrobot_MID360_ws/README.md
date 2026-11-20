@@ -43,6 +43,12 @@ ROS1 的 `package.xml`，直接用 `catkin_make`。所需系统依赖来自 Noet
 roslaunch bcrobot_bringup mid360_drive.launch start_chassis:=false rviz:=true
 ```
 
+雷达 SDK 的日志默认在 NUC 桌面的 **MID360 SDK** 终端单独显示。关闭该窗口会停止
+雷达驱动，并让 `roslaunch` 一并关闭本次启动的节点。在主终端按 Ctrl+C 停止启动时，
+日志窗口也会退出。通过 SSH 启动时，有已登录的 NUC 桌面也会弹出窗口。
+无图形会话时，可在另一个 SSH 终端按主终端打印的路径用 `tail -f` 查看日志；
+此时从主终端停止驱动。加 `lidar_log_window:=false` 可恢复在主终端直接显示 SDK 日志。
+
 另开终端加载同一工作区，核对消息类型、频率、里程计延迟和 TF。
 
 ```bash

@@ -37,7 +37,8 @@ def main():
 
         # 暂用相机系的水平距离作为跟随距离。忽略相机俯仰对该距离的影响。
         distance_error = math.hypot(x, y) - config['follow_distance']
-        if follow_position and distance_error > config['distance_tolerance']:
+        # 过近即沿远离目标的方向退开。前进仍需超过原来的距离容差。
+        if follow_position and (distance_error < 0 or distance_error > config['distance_tolerance']):
             try:
                 transform = buffer.lookup_transform('base_footprint', target.header.frame_id, target.header.stamp)
             except tf2_ros.TransformException:
@@ -47,7 +48,8 @@ def main():
                 # 平移方向取变换后的位置在底盘平面的投影，前/左速度单位 m/s。
                 point = do_transform_point(target, transform).point
                 bearing = math.atan2(point.y, point.x)
-                speed = min(distance_error, config['max_linear_speed'])
+                # 保留距离误差的正负，前进与后退都按同一速度上限限幅。
+                speed = math.copysign(min(abs(distance_error), config['max_linear_speed']), distance_error)
                 command.linear.x = speed * math.cos(bearing)
                 command.linear.y = speed * math.sin(bearing)
 

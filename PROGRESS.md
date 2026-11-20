@@ -73,9 +73,29 @@
 - SSH 恢复后通过校验归档部署至 NUC `/home/icral/BCrobot_MID360_ws`。在干净 Noetic 环境从零运行 `catkin_make -j2` 成功，默认五节点和关闭底盘且开启 RViz 的入口解析通过。四个 C++ 可执行文件无缺失动态库；构建日志在 `log/catkin_make.log`。
 - 在独立 ROS master 上关闭雷达和底盘，确认 FAST-LIO 的点云与 IMU 订阅类型、里程计话题注册、复用的安装 TF 以及转发节点无输入时的零速度输出。NUC 有线端口无载波及 IPv4 地址，实际网口配置、雷达收包、定位建图和车体运动待实测。
 
+## MID360 SDK 独立日志终端（2026-11-19）
+
+- `mid360_drive.launch` 默认将 Livox 驱动标准输出和标准错误写入单独日志，并在 NUC 的 GNOME 终端跟随显示。SSH 可使用已登录的 NUC 桌面，无桌面时保留文件。支持 `lidar_log_window:=false` 恢复原终端输出。
+- 已同步至 NUC。catkin 增量构建、启动参数和禁用雷达解析通过。SSH 下用模拟输出验证真实终端的 PTY、日志分流、信号退出、日志窗口回收和无图形回退。未启动实物雷达或底盘。
+
+## MID360 实机驱动取流（2026-11-19）
+
+- 用户在 NUC 单独运行 `msg_MID360.launch`。有线口 `192.168.1.12/24` 已连通雷达 `192.168.1.102`，驱动持有点云和 IMU 的 UDP 端口。
+- ROS 实测 6 秒收到 60 帧点云（9.99 Hz，平均约 20,002 点/帧）与 1201 条 IMU（200.02 Hz）。`rostopic echo -n 1 /livox/lidar/point_num` 复核读到 19,968 点。现场仅运行驱动，未测 FAST-LIO 建图和车体联动。
+- 用独立 SSH 终端复现截图：仅加载 Noetic 时 `rostopic hz /livox/lidar` 无法加载 CustomMsg。加载 MID360 工作区后同一命令实测约 10 Hz，未重启驱动。
+
+## MID360 日志窗口联动退出（2026-11-19）
+
+- 已同步脚本和说明至 NUC。使用独立 ROS master、实际 GNOME 日志窗口及两个模拟节点验证：关闭窗口或对主 roslaunch 发送 SIGINT，窗口均关闭，两个节点正常退出且无残留 PID。本轮未启动实物雷达或底盘。
+
 ## MID360 两层视觉跟随（2026-11-19）
 
 - 本机 `robot_nav` 新增可通过 `rosrun` 启动的 `person_follow.py` 及配置。默认只控制偏航，`F` 叠加平移，空格退回只跟随朝向。订阅 `/person/position`，向既有 `/target_cmd_vel` 转发链发布 `Twist`。
 - MID360 bringup 安装 YAML 改名为 `sensor_mount.yaml`。保留原 IMU 外参，增加 `base_footprint → l515_link` 的静态 TF，L515 外参暂为零占位。更新构建清单和 MID360 使用说明。
 - Python 3.8 语法、XML、YAML 和 Git 差异检查通过。NUC 临时工作区 `catkin_make -j2` 成功，独立 ROS master 验证静态 TF、左右偏航符号、平移方向与限速、距离阈值、缺 TF 时只转向，以及 `F` 和空格切换。临时测试已退出，未更新 NUC 正式部署，未进行实车联调。
 - 随后已同步至 NUC `/home/icral/BCrobot_MID360_ws`，校验 9 个文件内容，完成安装 YAML 改名。正式工作区 `catkin_make -j2` 成功，`rosrun` 识别跟随入口，bringup 默认五节点及 IMU、L515 安装参数静态解析通过。仍未启动硬件或实车联调。
+
+## MID360 视觉跟随增加后退（2026-11-20）
+
+- 修改并同步 `person_follow.py` 到 NUC 正式工作区。位置模式下，负距离误差产生反向平移，前后均按同一个速度上限限幅。NUC 跟随 YAML 的 SHA-256 部署前后相同。
+- NUC Python 3.8 语法和隔离回调检查通过，覆盖负误差、反向限幅、前进容差、前进限幅和只转向模式。`rosrun` 路径解析通过。未重启现场节点或实车验证。
